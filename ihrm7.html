@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International HRM at Aditya Birla Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Darker slate background */
+            color: #d1d5db;
+            overflow: hidden;
+        }
+
+        /* New animated background */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #0c3483, #a200a2, #009393, #a73b00);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.98) translateY(20px);
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        .slide-content {
+            background: rgba(15, 23, 42, 0.85); /* More opaque */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.5); /* Enhanced shadow */
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #93c5fd, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .slide-title {
+            font-size: 2.75rem; /* Slightly larger */
+            font-weight: 800;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide-subtitle {
+            font-size: 1.25rem;
+            color: #9ca3af;
+            margin-top: -1.25rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Animation for list items */
+        .animated-list > * {
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #1e293b; /* Updated color */
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa); /* Gradient progress bar */
+            width: 0%;
+            transition: width 0.4s ease-out;
+        }
+
+        .nav-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background-color: #334155;
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .nav-btn:hover {
+            background-color: #4f46e5;
+            transform: scale(1.1);
+        }
+        .slide-counter {
+            font-weight: 600;
+            color: #9ca3af;
+            background-color: rgba(30, 41, 59, 0.8);
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+        }
+
+        /* PESTLE Wheel style */
+        .pestle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .pestle-item {
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border-left: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pestle-item:nth-child(1) { border-color: #60a5fa; } /* Blue */
+        .pestle-item:nth-child(2) { border-color: #facc15; } /* Yellow */
+        .pestle-item:nth-child(3) { border-color: #a78bfa; } /* Purple */
+        .pestle-item:nth-child(4) { border-color: #22d3ee; } /* Cyan */
+        .pestle-item:nth-child(5) { border-color: #fb923c; } /* Orange */
+        .pestle-item:nth-child(6) { border-color: #4ade80; } /* Green */
+
+        .pestle-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* HR Practice card style */
+        .practice-card {
+            background: #1e293b;
+            border-radius: 1rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .impact-callout {
+            background: rgba(79, 70, 229, 0.15); /* Indigo highlight */
+            border: 1px solid rgba(79, 70, 229, 0.6);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+        }
+        .impact-callout strong {
+            color: #a5b4fc; /* Lighter Indigo */
+        }
+        
+        .colored-text {
+             background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Styles for the new Cover Page */
+        .cover-page-content {
+            text-align: center;
+        }
+        .cover-page-content .group-name {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-top: 2rem;
+        }
+         .cover-page-content .team-members {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+         }
+         .cover-page-content .team-member {
+            font-size: 1.125rem;
+            color: #d1d5db;
+         }
+         
+        /* Game Styles */
+        .game-metrics { display: flex; flex-direction: column; gap: 1rem; }
+        .metric-bar-container { background-color: #1e293b; border-radius: 99px; overflow: hidden; }
+        .metric-bar { height: 1.5rem; width: 50%; border-radius: 99px; transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out; text-align: right; padding-right: 0.5rem; color: white; font-weight: 600; font-size: 0.8rem; line-height: 1.5rem;}
+        .game-scenario { font-size: 1.25rem; font-weight: 500; color: #e2e8f0; margin-bottom: 1.5rem; }
+        .game-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .game-option { background-color: #1e293b; border: 2px solid #334155; padding: 1.25rem; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease-in-out; text-align: left; }
+        .game-option:not(:disabled):hover { background-color: #334155; border-color: #6366f1; transform: translateY(-4px); }
+        .game-option h3 { font-size: 1.1rem; font-weight: 600; color: #c4b5fd; margin-bottom: 0.5rem; }
+        .game-option p { font-size: 0.9rem; color: #94a3b8; }
+        .game-option.selected { border-color: #818cf8; transform: translateY(-4px); background-color: #334155; }
+        .game-option:disabled:not(.selected) { opacity: 0.5; cursor: not-allowed; }
+        .game-feedback { margin-top: 1.5rem; font-weight: 500; min-height: 2rem; color: #cbd5e1; }
+
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <!-- SLIDES CONTAINER -->
+
+    <!-- Slide 0: Cover Page -->
+    <div id="slide0" class="slide active" data-notes="Welcome everyone. We are Group 6, and today we'll be presenting our analysis on the International Human Resource Management practices at the Aditya Birla Group.">
+        <div class="slide-content cover-page-content">
+            <!-- LOGO PLACEHOLDER: Place your 'aditya-birla-group-seeklogo.png' file in the same folder as this HTML file. -->
+            <img src="aditya-birla-group-seeklogo.png" alt="Aditya Birla Group Logo" class="w-auto h-32 mx-auto mb-6">
+            
+            <h2 class="group-name">Group 6</h2>
+            <div class="team-members">
+                <span class="team-member">Ritika Modi</span>
+                <span class="team-member">Rohith Harikrishnan</span>
+                <span class="team-member">Sheldon Sequiera</span>
+                <span class="team-member">Ujjaval Shah</span>
+                <span class="team-member">Anirudh Agarwal</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Slide 1: Title & Objective -->
+    <div id="slide1" class="slide" data-notes="Today I’ll quickly set industry context and then show how ABG’s distinctive HR practices—leadership development, mobility, DEI, recognition—shape culture and move business outcomes.">
+        <div class="slide-content relative">
+            <!-- WATERMARK PLACEHOLDER -->
+             <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+
+            <h1 class="slide-title gradient-text">Presentation Objective</h1>
+            <p class="slide-subtitle">How ABG’s people systems scale across 40+ countries</p>
+            <div class="grid md:grid-cols-2 gap-8 text-lg">
+                <div>
+                    <h3 class="font-bold text-xl text-white mb-2">
+                        <span class="colored-text">Who:</span> Aditya Birla Group
+                    </h3>
+                    <p>A <span class="text-yellow-400 font-semibold">US$67B</span> global conglomerate.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xl text-white mb-2"><span class="colored-text">What we’ll cover:</span></h3>
+                    <ul class="list-none space-y-3 animated-list">
+                        <li style="animation-delay: 0.2s" class="flex items-center gap-3"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>Industry context</li>
+                        <li style="animation-delay: 0.4s" class="flex items-center gap-3"><svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>ABG’s HR philosophy</li>
+                        <li style="animation-delay: 0.6s" class="flex items-center gap-3"><svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m5 4v4m-2-2h4M17 3h4m-4 5v4m-2-2h4"></path></svg>5 standout practices</li>
+                        <li style="animation-delay: 0.8s" class="flex items-center gap-3"><svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>Cultural & performance impact</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: ABG at a Glance -->
+    <div id="slide2" class="slide" data-notes="ABG operates in diversified, cyclical and capex-heavy sectors with a geographically spread workforce—so scalable, portable HR systems are mission-critical.">
+        <div class="slide-content relative">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text">ABG at a Glance</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center mt-8 animated-list">
+                <div class="bg-gray-800 p-6 rounded-lg" style="animation-delay: 0.2s;">
+                    <p class="text-4xl font-extrabold text-blue-400">US$67B</p>
+                    <p class="mt-2 text-gray-400">Group Revenue</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg" style="animation-delay: 0.4s;">
+                    <p class="text-4xl font-extrabold text-green-400">227,500+</p>
+                    <p class="mt-2 text-gray-400">Employees</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg" style="animation-delay: 0.6s;">
+                    <p class="text-4xl font-extrabold text-purple-400">41</p>
+                    <p class="mt-2 text-gray-400">Countries</p>
+                </div>
+            </div>
+            <div class="mt-12 text-center">
+                <h3 class="font-semibold text-xl mb-3"><span class="colored-text">Core Portfolio</span></h3>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">Metals (Hindalco/Novelis) &nbsp;•&nbsp; Cement (UltraTech) &nbsp;•&nbsp; Fashion & Retail (ABFRL) &nbsp;•&nbsp; Financial Services (AB Capital), and more.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: PESTLE Analysis -->
+    <div id="slide3" class="slide" data-notes="ABG’s response is a ‘group-wide operating system for people’—common values, shared talent pools, and platforms that travel across businesses and countries.">
+        <div class="slide-content relative flex flex-col justify-center">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text text-center">PESTLE: HR Implications for an Indian MNC</h1>
+            <div class="pestle-grid mt-8 max-w-5xl mx-auto">
+                <div class="pestle-item"><strong class="text-blue-400">Political/Legal:</strong> Multi-country labor compliance & safety standards.</div>
+                <div class="pestle-item"><strong class="text-yellow-400">Economic:</strong> Commodity/capex cycles requiring workforce flexibility.</div>
+                <div class="pestle-item"><strong class="text-purple-400">Social:</strong> Gen-Z expectations for learning, mobility, and inclusion.</div>
+                <div class="pestle-item"><strong class="text-cyan-400">Technological:</strong> Digitalization driving upskilling at scale.</div>
+                <div class="pestle-item"><strong class="text-orange-400">Environmental:</strong> ESG & safety culture demands frontline capability.</div>
+                <div class="pestle-item"><strong class="text-green-400">Global Footprint:</strong> Cross-border mobility needs cultural integration.</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 4: ABG HR Philosophy & EVP -->
+    <div id="slide4" class="slide" data-notes="These elements anchor an internationally consistent culture while giving employees real career breadth.">
+        <div class="slide-content relative flex flex-col justify-center text-center">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text mx-auto">HR Philosophy & Employee Value Proposition</h1>
+            <div class="grid md:grid-cols-3 gap-8 mt-10 max-w-6xl mx-auto">
+                <div class="bg-gray-800 p-6 rounded-lg text-center animated-list" style="animation-delay: 0.2s">
+                    <h3 class="text-2xl font-bold text-white">Values: <span class="text-blue-400">"Power of 5"</span></h3>
+                    <p class="mt-2 text-gray-400">Integrity, Commitment, Passion, Seamlessness, Speed</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg text-center animated-list" style="animation-delay: 0.4s">
+                    <h3 class="text-2xl font-bold text-white">EVP</h3>
+                    <p class="mt-2 text-purple-400 text-xl font-semibold">"A World of Opportunities"</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg text-center animated-list" style="animation-delay: 0.6s">
+                    <h3 class="text-2xl font-bold text-white">Ethos</h3>
+                    <p class="mt-2 text-green-400 text-xl font-semibold">"One ABG"</p>
+                    <p class="mt-1 text-gray-400">promoting mobility & collaboration</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Best Practice #1: Gyanodaya -->
+    <div id="slide5" class="slide" data-notes="ABG treats learning as infrastructure—both a physical university and a digital layer—so capability building isn’t episodic; it’s continuous and borderless.">
+        <div class="slide-content relative">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text">Best Practice #1: Learning as Infrastructure</h1>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                    <div class="practice-card">
+                        <h3 class="text-2xl font-bold text-blue-400">Gyanodaya (Corporate University)</h3>
+                        <p>Global Center for Leadership Learning. Runs accelerator programs, function academies, and women's leadership initiatives like Springboard.</p>
+                    </div>
+                    <div class="practice-card">
+                        <h3 class="text-2xl font-bold text-purple-400">Gyanodaya Virtual Campus (GVC)</h3>
+                        <p>AI-powered, mobile-first micro-learning platform. Curates internal and external content for always-on learning.</p>
+                    </div>
+                </div>
+                <div class="impact-callout">
+                    <strong>Impact:</strong> Creates a portable learning culture, enabling rapid upskilling for tech/ESG, and driving high role-change outcomes.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Best Practice #2: Leadership Pipelines -->
+    <div id="slide6" class="slide" data-notes="These programs de-risk leadership succession in core businesses like metals and cement—critical for safety, quality and throughput.">
+        <div class="slide-content relative">
+             <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text">Best Practice #2: Forging Future Leaders</h1>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                    <div class="practice-card">
+                        <h3 class="text-2xl font-bold text-green-400">ABG Leadership Program (ABGLP)</h3>
+                        <p>Structured pathways for early-career & mid-senior talent to take on complex roles across different sectors.</p>
+                    </div>
+                    <div class="practice-card">
+                        <h3 class="text-2xl font-bold text-cyan-400">Global Manufacturing Leadership Program (GMLP)</h3>
+                        <p>Builds a dedicated pipeline of global plant leaders, with alumni moving to head units in India, China, and beyond.</p>
+                    </div>
+                </div>
+                <div class="impact-callout">
+                    <strong>Impact:</strong> Ensures a steady internal supply of culturally-aligned leaders for critical, hard-to-staff operational roles, ensuring continuity.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Best Practice #3: Internal Mobility -->
+    <div id="slide7" class="slide" data-notes="Mobility converts the conglomerate’s diversity into employee opportunity—boosting retention, engagement, and succession depth.">
+        <div class="slide-content relative">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text">Best Practice #3: Career Architecture & Mobility</h1>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                     <div class="practice-card">
+                         <h3 class="text-2xl font-bold text-yellow-400">Career Lattice, Not Ladder</h3>
+                         <p>Internal mobility across roles, functions, and businesses is an explicit promise and a core part of the "One ABG" careers message.</p>
+                     </div>
+                     <div class="practice-card">
+                         <h3 class="text-2xl font-bold text-orange-400">Enabling Platforms</h3>
+                         <p>Tools like 'Xplore Careers' and dedicated Talent Councils proactively curate cross-business moves and developmental journeys.</p>
+                     </div>
+                </div>
+                <div class="impact-callout">
+                    <strong>Impact:</strong> A staggering <span class="text-white font-bold text-xl">97%</span> role-change rate over time for program participants, showcasing mobility at scale and boosting retention.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Best Practice #4: DEI at Scale -->
+    <div id="slide8" class="slide" data-notes="ABG treats inclusion as a performance lever—especially where female representation is hardest: plants and operations.">
+        <div class="slide-content relative">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text">Best Practice #4: DEI with a Frontline Focus</h1>
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-6 mt-4">
+                    <div class="bg-gray-800 p-6 rounded-lg animated-list" style="animation-delay: 0.2s">
+                        <h3 class="text-xl font-bold text-purple-400">Visible Leadership</h3>
+                        <p>Group-wide push for women leaders across all businesses and corporate functions.</p>
+                    </div>
+                     <div class="bg-gray-800 p-6 rounded-lg animated-list" style="animation-delay: 0.4s">
+                        <h3 class="text-xl font-bold text-cyan-400">Manufacturing Focus</h3>
+                        <p>Targeted stories and enablement for women in manufacturing; ERGs like WIN & WISE.</p>
+                    </div>
+                     <div class="bg-gray-800 p-6 rounded-lg animated-list" style="animation-delay: 0.6s">
+                        <h3 class="text-xl font-bold text-blue-400">Culture Shaping</h3>
+                        <p>Campaigns like #ChangeTheGame actively challenge workplace bias and stereotypes.</p>
+                    </div>
+                </div>
+                <div class="impact-callout">
+                    <strong>Impact:</strong> Broadens the leadership bench, enables inclusive decision-making, and strengthens the employer brand in STEM roles.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 9: Best Practice #5: Recognition -->
+    <div id="slide9" class="slide" data-notes="Recognition ties culture to results—showcasing what ‘good’ looks like across very different businesses.">
+        <div class="slide-content relative">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text">Best Practice #5: Recognition & Performance</h1>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                    <div class="practice-card">
+                        <h3 class="text-2xl font-bold text-yellow-400">Tiered Awards System</h3>
+                        <p>The prestigious Chairman’s Awards and Group/Business-level Inspiration Awards create a multi-tier recognition ecosystem.</p>
+                    </div>
+                    <div class="practice-card">
+                        <h3 class="text-2xl font-bold text-green-400">Performance Alignment</h3>
+                        <p>Systems emphasize clear KRAs and link rewards to both exemplary outcomes and role-modeling the "Power of 5" values.</p>
+                    </div>
+                </div>
+                <div class="impact-callout">
+                    <strong>Impact:</strong> Reinforces values-aligned high performance and promotes cross-company visibility of top talent and successful projects.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Interactive HR Strategy Simulator -->
+    <div id="slide10" class="slide" data-notes="Now it's your turn to be the CHRO. Let's see how you would handle a strategic challenge.">
+        <div class="slide-content relative">
+             <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text text-center">HR Strategy Simulator</h1>
+            <div class="grid md:grid-cols-2 gap-12 items-center mt-8">
+                <div class="animated-item" style="animation-delay: 0.2s;">
+                    <div id="game-scenario" class="game-scenario"></div>
+                    <div id="game-options-grid" class="game-options-grid"></div>
+                    <div id="game-feedback" class="game-feedback"></div>
+                     <button id="next-scenario-btn" class="mt-4 px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors hidden">Next Scenario</button>
+                </div>
+                <div class="animated-item" style="animation-delay: 0.4s;">
+                    <h2 class="text-xl font-semibold mb-4 text-center">Performance Metrics</h2>
+                    <div class="game-metrics">
+                        <div>
+                            <label class="font-medium text-blue-400">Productivity</label>
+                            <div class="metric-bar-container"><div id="productivity-bar" class="metric-bar bg-blue-500">50%</div></div>
+                        </div>
+                        <div>
+                            <label class="font-medium text-purple-400">Innovation</label>
+                            <div class="metric-bar-container"><div id="innovation-bar" class="metric-bar bg-purple-500">50%</div></div>
+                        </div>
+                        <div>
+                            <label class="font-medium text-green-400">Retention</label>
+                            <div class="metric-bar-container"><div id="retention-bar" class="metric-bar bg-green-500">50%</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Conclusion -->
+    <div id="slide11" class="slide" data-notes="These five mechanisms are exportable to other firms—especially those with multi-country, multi-business complexity.">
+        <div class="slide-content relative">
+            <img src="aditya-birla-group-seeklogo.png" alt="Logo Watermark" class="absolute top-6 right-6 w-16 h-auto opacity-10">
+            <h1 class="slide-title gradient-text text-center">Culture & Performance: What’s Emulable</h1>
+            <div class="grid md:grid-cols-5 gap-10 mt-8 items-start">
+                <div class="md:col-span-3">
+                    <h3 class="text-xl font-bold text-white mb-4"><span class="colored-text">Practice → Why it Travels</span></h3>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-slate-800 rounded-lg"><strong class="text-blue-400">Corporate University + LXP:</strong> Portable, always-on capability building.</div>
+                        <div class="p-3 bg-slate-800 rounded-lg"><strong class="text-green-400">Leadership Pipelines:</strong> Stable supply of culturally aligned leaders.</div>
+                        <div class="p-3 bg-slate-800 rounded-lg"><strong class="text-yellow-400">Internal Mobility:</strong> Measurable role changes boost retention.</div>
+                        <div class="p-3 bg-slate-800 rounded-lg"><strong class="text-purple-400">DEI with Frontline Focus:</strong> Representation beyond headquarters.</div>
+                        <div class="p-3 bg-slate-800 rounded-lg"><strong class="text-orange-400">Recognition Ecosystem:</strong> Connects values to business results.</div>
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <h3 class="text-xl font-bold text-white mb-4"><span class="colored-text">3 Key Takeaways</span></h3>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-lg font-semibold">
+                           1. Treat learning as infrastructure.
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-lg font-semibold">
+                           2. Make mobility the default, not the exception.
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-lg font-semibold">
+                           3. Tie inclusion to hard performance outcomes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- UI CONTROLS -->
+    <div class="progress-bar-container">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <div class="nav-controls">
+        <span id="slideCounter" class="slide-counter"></span>
+        <button id="prevBtn" class="nav-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+        </button>
+        <button id="nextBtn" class="nav-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        </button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+
+        // --- GAME LOGIC ---
+        const scenarios = [
+             {
+                scenario: "A newly acquired tech company has a fast, agile culture, but it clashes with the more structured 'ABG Way'. What is your integration strategy?",
+                options: [
+                    {
+                        title: "Mandate Full Integration",
+                        description: "Enforce the standard ABG processes immediately for consistency across the group.",
+                        effects: { productivity: 5, innovation: -20, retention: -15 },
+                        feedback: "Consistency is achieved, but this top-down approach stifles the acquired company's innovative spirit and causes key talent to leave."
+                    },
+                    {
+                        title: "Hybrid Culture Model",
+                        description: "Allow the new unit autonomy on project execution while integrating them into core ABG leadership and values programs.",
+                        effects: { productivity: -5, innovation: 20, retention: 15 },
+                        feedback: "A strategic choice! You accept a short-term productivity dip to protect the innovation you paid for and retain key people, creating a stronger, blended culture long-term."
+                    }
+                ]
+            },
+            {
+                scenario: "A high-potential leader in the fashion business is getting restless and has a competing offer. What's your move?",
+                options: [
+                    {
+                        title: "Counter-offer with a raise",
+                        description: "Offer a significant salary increase to convince them to stay in their current role.",
+                        effects: { productivity: 0, innovation: -10, retention: 5 },
+                        feedback: "They might stay for now, but the underlying issue of stagnation isn't solved. This can also create salary inequities."
+                    },
+                    {
+                        title: "Curate a cross-business move",
+                        description: "Work with the Talent Council to find a challenging new role for them in the Financial Services business.",
+                        effects: { productivity: -5, innovation: 20, retention: 20 },
+                        feedback: "Excellent! You reinforce the 'World of Opportunities' promise, retaining a top talent by providing growth, which is more powerful than money alone."
+                    }
+                ]
+            },
+            {
+                scenario: "Finance demands a 15% cut in the HR budget due to economic headwinds. Where do you make the cuts?",
+                options: [
+                     {
+                        title: "Cut Leadership Programs",
+                        description: "Pause the high-cost ABGLP and GMLP programs for one year to achieve the savings target.",
+                        effects: { productivity: 5, innovation: -15, retention: -10 },
+                        feedback: "You've saved money now, but this creates a critical leadership gap in 2-3 years, jeopardizing future growth and operational stability."
+                    },
+                    {
+                        title: "Reduce General Perks & Recognition",
+                        description: "Scale back on broad-based wellness programs and reduce the budget for the Inspiration Awards.",
+                        effects: { productivity: -10, innovation: -20, retention: -15 },
+                        feedback: "This is a tough call. While it protects the strategic leadership pipeline, the immediate drop in morale across the entire workforce is significant and may lead to lower turnover."
+                    }
+                ]
+            }
+        ];
+
+        let currentScenarioIndex = 0;
+        let metrics = { productivity: 50, innovation: 50, retention: 50 };
+        let initialMetrics = {...metrics};
+        let choiceMade = false;
+
+        const scenarioEl = document.getElementById('game-scenario');
+        const optionsGridEl = document.getElementById('game-options-grid');
+        const feedbackEl = document.getElementById('game-feedback');
+        const nextScenarioBtn = document.getElementById('next-scenario-btn');
+
+        function startGame() {
+            metrics = { productivity: 50, innovation: 50, retention: 50 };
+            currentScenarioIndex = 0;
+            updateMetricBars();
+            displayScenario();
+        }
+
+        function displayScenario() {
+            initialMetrics = {...metrics};
+            choiceMade = false;
+            const currentScenario = scenarios[currentScenarioIndex];
+            scenarioEl.textContent = currentScenario.scenario;
+            optionsGridEl.innerHTML = '';
+            feedbackEl.textContent = '';
+            nextScenarioBtn.classList.add('hidden');
+
+            currentScenario.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('game-option');
+                button.innerHTML = `<h3>${option.title}</h3><p>${option.description}</p>`;
+                button.onclick = () => selectGameOption(option, button);
+                optionsGridEl.appendChild(button);
+            });
+        }
+
+        function selectGameOption(option, selectedBtn) {
+            if (choiceMade && selectedBtn.classList.contains('selected')) {
+                // Reset this round
+                metrics = {...initialMetrics};
+                updateMetricBars();
+                feedbackEl.textContent = '';
+                const buttons = optionsGridEl.querySelectorAll('.game-option');
+                buttons.forEach(btn => {
+                    btn.classList.remove('selected');
+                    btn.disabled = false;
+                });
+                nextScenarioBtn.classList.add('hidden');
+                choiceMade = false;
+                return;
+            }
+
+            if (choiceMade) return; // Prevent changing choice after one is made
+
+            choiceMade = true;
+
+            metrics.productivity = Math.max(0, Math.min(100, initialMetrics.productivity + option.effects.productivity));
+            metrics.innovation = Math.max(0, Math.min(100, initialMetrics.innovation + option.effects.innovation));
+            metrics.retention = Math.max(0, Math.min(100, initialMetrics.retention + option.effects.retention));
+            
+            updateMetricBars();
+            feedbackEl.textContent = option.feedback;
+            
+            const allButtons = optionsGridEl.querySelectorAll('.game-option');
+            allButtons.forEach(btn => {
+                btn.disabled = true; // Disable all buttons
+                btn.classList.remove('selected');
+            });
+            selectedBtn.classList.add('selected'); // Highlight selected one
+            selectedBtn.disabled = false; // Keep selected one enabled for re-clicking
+            
+            
+            if (currentScenarioIndex < scenarios.length - 1) {
+                nextScenarioBtn.classList.remove('hidden');
+            } else {
+                 feedbackEl.textContent += " You've completed the simulation!";
+            }
+        }
+        
+        nextScenarioBtn.addEventListener('click', () => {
+             if (choiceMade) {
+                currentScenarioIndex++;
+                displayScenario();
+             }
+        });
+
+        function updateMetricBars() {
+            const productivityBar = document.getElementById('productivity-bar');
+            const innovationBar = document.getElementById('innovation-bar');
+            const retentionBar = document.getElementById('retention-bar');
+
+            productivityBar.style.width = `${metrics.productivity}%`;
+            innovationBar.style.width = `${metrics.innovation}%`;
+            retentionBar.style.width = `${metrics.retention}%`;
+            
+            productivityBar.textContent = `${metrics.productivity}%`;
+            innovationBar.textContent = `${metrics.innovation}%`;
+            retentionBar.textContent = `${metrics.retention}%`;
+        }
+
+
+        // --- PRESENTATION LOGIC ---
+        function updatePresentation() {
+            // Update slides
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+
+            // Update progress bar and counter
+            const progressPercentage = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Animate list items on active slide
+            const activeSlide = slides[currentSlide];
+            const animatedItems = activeSlide.querySelectorAll('.animated-list > *');
+            animatedItems.forEach(item => {
+                item.style.animation = 'none';
+                item.offsetHeight; // Trigger reflow
+                item.style.animation = '';
+            });
+
+            if(activeSlide.id === 'slide10') {
+                startGame();
+            }
+
+            // Log speaker notes to console
+            const notes = activeSlide.dataset.notes;
+            if (notes) {
+                console.clear();
+                console.log(`%c🎙️ Speaker Notes (Slide ${currentSlide + 1}):`, 'color: #60a5fa; font-size: 1.2em; font-weight: bold;');
+                console.log(`%c${notes}`, 'font-size: 1.1em;');
+            }
+        }
+
+        function goToNextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updatePresentation();
+            }
+        }
+
+        function goToPrevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updatePresentation();
+            }
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', goToNextSlide);
+        prevBtn.addEventListener('click', goToPrevSlide);
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                goToNextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                goToPrevSlide();
+            }
+        });
+
+        // Initial setup
+        updatePresentation();
+    </script>
+</body>
+</html>
+
